@@ -81,13 +81,14 @@ const promptMember = () => {
                 type: 'list',
                 name: 'role',
                 message: 'What is your role/title? (Required)',
-                choices: ['Engineer','Intern']
+                choices: ['Engineer','Intern','Finish Building Team']
                 
             },
             {
                 type: 'input',
                 name: 'name',
                 message: 'What is YOUR name? (Required)',
+                when: (list) => list.role ==='Engineer' || list.role === 'Intern',
                 validate: name => {
                     if(name){
                         return true;
@@ -101,6 +102,7 @@ const promptMember = () => {
                 type: 'input',
                 name: 'id',
                 message: 'What is YOUR id NUMBER? (Required)',
+                when: (list) => list.role ==='Engineer' || list.role === 'Intern',
                 validate: id => {
                     if(isNaN(id) || !id ){
                         console.log('That is not a valid number/input')
@@ -114,6 +116,7 @@ const promptMember = () => {
                 type: 'input',
                 name: 'email',
                 message: 'What is YOUR email? (Required)',
+                when: (list) => list.role ==='Engineer' || list.role === 'Intern',
                 validate: email => {
                     if (email){
                         return true;
@@ -139,7 +142,8 @@ const promptMember = () => {
                 type: 'confirm',
                 name: 'newMember',
                 message: 'Would you like to add another team Member?',
-                default: false
+                default: false,
+                when: (list) => list.role ==='Engineer' || list.role === 'Intern'
             }
        
     ])
@@ -148,11 +152,11 @@ const promptMember = () => {
             let interData = new Intern(member.name, member.id, member.email, member.school);
             memberList.push(interData);
         }
-        else {
+        else if (member.role === 'Engineer') {
             let engineerData = new Engineer(member.name, member.id, member.email, member.github);
             memberList.push(engineerData);
         }
-        console.log(member.newMember);
+        
         if(member.newMember){
             return promptMember();
         } else {
