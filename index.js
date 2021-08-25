@@ -1,6 +1,10 @@
 const inquirer = require('inquirer');
-const writeFile = require('./src/generate-site.js')
+const {writeFile} = require('./src/generate-site.js')
 const generatePage = require('./src/page-template.js');
+const Engineer = require('./lib/Engineer');
+const Intern = require('./lib/Intern');
+const Manager = require('./lib/Manager');
+const memberList = [];
 
 const promptManager = () => {
     return inquirer.prompt([
@@ -55,22 +59,22 @@ const promptManager = () => {
                     return true;
                 }
             }
-        }
-       
+        } 
       
-    ]);
+    ])
+    .then(manager => {
+        let managerData = new Manager(manager.name, manager.id, manager.email, manager.officeNum);
+        memberList.push(managerData);
+    })
 };
 
 
-const promptMember = (memberList) => {
+const promptMember = () => {
     console.log(`
     =================
     Add a Team Member
     =================  
     `)
-    if (!memberList) {
-        memberList = [];
-    }
         return inquirer
         .prompt([
             {
@@ -139,13 +143,22 @@ const promptMember = (memberList) => {
             }
        
     ])
-    .then(memberList => {
-        // memberList.push(memberList);
-        if (memberList.newMember){
-            return promptMember(memberList);
-        } else{
+    .then(member => {
+        if (member.role === 'Intern') {
+            let interData = new Intern(member.name, member.id, member.email, member.school);
+            memberList.push(interData);
+        }
+        else {
+            let engineerData = new Engineer(member.name, member.id, member.email, member.github);
+            memberList.push(engineerData);
+        }
+        console.log(member.newMember);
+        if(member.newMember){
+            return promptMember();
+        } else {
             return memberList;
         }
+    
     })
 };
 
@@ -154,24 +167,14 @@ promptManager()
         console.log(managerData);
     })
     .then(promptMember)
-    .then(teamMember => {
-        console.log(teamMember);
-        return generatePage(teamMember);
-        // console.log(memberList);
+    .then(memberList => {
+        console.log(memberList);
+        return generatePage(memberList);
     })
-    .then(pageHTML => {
-        console.log(pageHTML);
-        return writeFile(pageHTML);
+    .then(html => {
+        return writeFile(html)
+    })
+    .catch(err => {
+        console.log(err);
     })
 
-
-
-
-
-
-// {
-//     type: 'list',
-//     name: 'role',
-//     message: ['Manager','Engineer','Intern'],
-
-// }
