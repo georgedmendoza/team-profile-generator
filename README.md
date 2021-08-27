@@ -1,7 +1,7 @@
 # team-profile-generator
 
   ## Description 
-  This application generates a team webpage using node.js, inquirer, js, html, & css. The information the user inputs is captured and generates a webpage displaying all the team information. The user can create a team composed of engineers, interns, and managers. Currently this webpage requires one manager to be generated. A brief video is attached in the Usage section to see how the application functions when the user is interacting with it.
+  This application generates a team webpage using node.js, inquirer, js, html, & css. The information the user inputs is captured and generates a webpage displaying all the team information. The user can create a team composed of engineers, interns, and managers. Currently this webpage requires one manager to be generated. This application also includes test that check to see if the creation criteria for the manager, engineer, and intern are meet before making changes to the application. A brief video is attached in the Usage section to see how the application functions when the user is interacting with it.
 
 
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
